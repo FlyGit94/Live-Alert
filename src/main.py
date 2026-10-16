@@ -68,9 +68,11 @@ def main():
 
     # ---------- YouTube（只在 7:45 ~ 10:15 查）----------
     if YOUTUBE_CHANNEL_ID:
+        force = os.environ.get("FORCE_YOUTUBE", "false").lower() == "true"
         if not is_youtube_check_time():
             print("[YouTube] 当前不在 7:45~10:15 检查时段，跳过")
         else:
+            print(f"[YouTube] 开始检查 (force={force})")
             y_live, y_title = is_youtube_live(YOUTUBE_CHANNEL_ID)
             was_live = state.get("youtube_live", False)
 
