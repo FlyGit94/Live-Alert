@@ -1,0 +1,46 @@
+name: Check Live Status
+
+on:
+  schedule:
+    # 每5分钟运行一次（UTC时间，cron不支持秒）
+    - cron: '*/5 * * * *'
+  workflow_dispatch:  # 允许手动点击运行测试
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # 缓存上一次的直播状态，避免重复通知
+      - name: Restore state
+        uses: actions/cache/restore@v4
+        with:
+          path: state.json
+          key: live-state-${{ github.run_id }}
+          restore-keys: |
+            live-state-
+
+      - name: Run checker
+        env:
+          PUSHOVER_USER_KEY: ${{ secrets.PUSHOVER_USER_KEY }}
+          PUSHOVER_APP_TOKEN: ${{ secrets.PUSHOVER_APP_TOKEN }}
+          BILIBILI_ROOM_ID: ${{ secrets.BILIBILI_ROOM_ID }}
+          YOUTUBE_CHANNEL_ID: ${{ secrets.YOUTUBE_CHANNEL_ID }}
+        run: python src/main.py
+
+      - name: Save state
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: state.json
+          key: live-state-${{ github.run_id }}
