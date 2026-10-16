@@ -38,7 +38,7 @@ jobs:
           BILIBILI_ROOM_ID: ${{ secrets.BILIBILI_ROOM_ID }}
           YOUTUBE_CHANNEL_ID: ${{ secrets.YOUTUBE_CHANNEL_ID }}
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-          FORCE_YOUTUBE: 'true'   # 测试时用 'true'，平时删掉或 'false'
+          FORCE_YOUTUBE: 'false'   # 测试时用 'true'，平时删掉或 'false'
         run: python src/main.py
 
       - name: Save state
