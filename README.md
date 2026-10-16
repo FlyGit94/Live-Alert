@@ -14,4 +14,4 @@
 
 ## 手动测试
 
-Actions → Check Live Status → Run workflow → 
+Run workflow → FORCE_YOUTUBE: 'false'   # 测试时用 'true'，平时删掉或 'false'
