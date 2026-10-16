@@ -1,9 +1,10 @@
 name: Check Live Status
 
 on:
-  schedule:
+  # schedule:
     # 每5分钟运行一次（UTC时间，cron不支持秒）
-    - cron: '*/5 * * * *'
+    # - cron: '*/5 * * * *'
+    # cron-jobs触发
   workflow_dispatch:  # 允许手动点击运行测试
 
 jobs:
