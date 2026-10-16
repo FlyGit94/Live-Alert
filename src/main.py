@@ -1,8 +1,8 @@
 import json
 import os
 import sys
+from datetime import datetime, timezone, timedelta
 
-# 让 src 目录内的模块可以互相 import
 sys.path.insert(0, os.path.dirname(__file__))
 
 from config import (
@@ -30,16 +30,22 @@ def save_state(state: dict):
         json.dump(state, f, ensure_ascii=False, indent=2)
 
 
+def is_youtube_check_time() -> bool:
+    """判断当前北京时间是否在 8:00 ~ 10:00 之间（含8点，不含10点）"""
+    beijing = timezone(timedelta(hours=8))
+    now = datetime.now(beijing)
+    return 8 <= now.hour < 10
+
+
 def main():
     state = load_state()
 
-    # ---------- Bilibili ----------
+    # ---------- Bilibili：每5分钟都查 ----------
     if BILIBILI_ROOM_ID:
         b_live, b_title = is_bilibili_live(BILIBILI_ROOM_ID)
         was_live = state.get("bilibili_live", False)
 
         if b_live and not was_live:
-            # 刚刚开播 → 推送
             send_pushover(
                 title="🔴 B站开播了！",
                 message=b_title or "主播开播了",
@@ -50,21 +56,24 @@ def main():
 
         state["bilibili_live"] = b_live
 
-    # ---------- YouTube ----------
+    # ---------- YouTube：只在北京时间 8~10 点查 ----------
     if YOUTUBE_CHANNEL_ID:
-        y_live, y_title = is_youtube_live(YOUTUBE_CHANNEL_ID)
-        was_live = state.get("youtube_live", False)
+        if not is_youtube_check_time():
+            print("[YouTube] 当前不在 8~10 点检查时段，跳过")
+        else:
+            y_live, y_title = is_youtube_live(YOUTUBE_CHANNEL_ID)
+            was_live = state.get("youtube_live", False)
 
-        if y_live and not was_live:
-            send_pushover(
-                title="🔴 YouTube开播了！",
-                message=y_title or "频道开播了",
-                url=f"https://www.youtube.com/channel/{YOUTUBE_CHANNEL_ID}/live",
-            )
-        elif not y_live and was_live:
-            print("[YouTube] 已下播")
+            if y_live and not was_live:
+                send_pushover(
+                    title="🔴 YouTube开播了！",
+                    message=y_title or "频道开播了",
+                    url=f"https://www.youtube.com/channel/{YOUTUBE_CHANNEL_ID}/live",
+                )
+            elif not y_live and was_live:
+                print("[YouTube] 已下播")
 
-        state["youtube_live"] = y_live
+            state["youtube_live"] = y_live
 
     save_state(state)
     print("检查完成")
