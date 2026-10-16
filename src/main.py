@@ -58,7 +58,7 @@ def main():
             # 刚刚开播 → 推送
             send_pushover(
                 title="🌸 火羽 Bilibili开播了！",
-                message=b_title or "火羽大小姐开播了",
+                message=b_title or "今日もこの後から配信する！",
                 url=f"https://live.bilibili.com/{BILIBILI_ROOM_ID}",
             )
         elif not b_live and was_live:
@@ -80,7 +80,7 @@ def main():
             if y_live and not was_live:
                 send_pushover(
                     title="🔔 火羽 YouTube开播了！",
-                    message=y_title or "火羽大小姐开播了",
+                    message=y_title or "今日もこの後から配信する！",
                     url=f"https://www.youtube.com/channel/{YOUTUBE_CHANNEL_ID}/live",
                 )
             elif not y_live and was_live:
