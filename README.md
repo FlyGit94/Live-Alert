@@ -1,5 +1,3 @@
-# Live-Alert
-
 # B站 / YouTube 开播监控
 
 每5分钟检查一次，开播时通过 Pushover 推送到手机。
