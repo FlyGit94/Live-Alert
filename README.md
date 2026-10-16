@@ -14,4 +14,6 @@
 
 ## 手动测试
 
-Run workflow → FORCE_YOUTUBE: 'false'   # 测试时用 'true'，平时删掉或 'false'
+测试时用 'true'，平时删掉或 'false'
+
+Run workflow → FORCE_YOUTUBE: 'false'
