@@ -10,7 +10,8 @@
 - PUSHOVER_APP_TOKEN
 - BILIBILI_ROOM_ID
 - YOUTUBE_CHANNEL_ID
+- YOUTUBE_CHANNEL_ID
 
 ## 手动测试
 
-Actions → Check Live Status → Run workflow
+Actions → Check Live Status → Run workflow → 
