@@ -13,8 +13,5 @@ YOUTUBE_CHANNEL_ID = os.environ.get("YOUTUBE_CHANNEL_ID", "")
 # YouTube：Data API v3 的密钥（AIzaSy 开头）
 YOUTUBE_API_KEY = os.environ.get("YOUTUBE_API_KEY", "")
 
-# Stripchat 有一个公开的状态查询接口，可以用来判断主播是否在播
-STRIPCHAT_USERNAME = os.environ.get("STRIPCHAT_USERNAME", "")
-
 # 状态文件，记录上次是否在播
 STATE_FILE = "state.json"
