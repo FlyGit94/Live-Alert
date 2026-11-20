@@ -97,7 +97,7 @@ def main():
 
         if sc_live and not was_live:
             send_pushover(
-                title="火羽 Stripchat 开播了！",
+                title="Lola666999🍑Stripchat开播了！",
                 message=sc_title or "主播已上线",
                 url=f"https://zh.stripchat.com/{STRIPCHAT_USERNAME}",
             )
