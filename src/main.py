@@ -9,7 +9,6 @@ sys.path.insert(0, os.path.dirname(__file__))
 from config import (
     BILIBILI_ROOM_ID,
     YOUTUBE_CHANNEL_ID,
-    STRIPCHAT_USERNAME, 
     STATE_FILE,
 )
 from check_bilibili import is_bilibili_live
