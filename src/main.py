@@ -2,6 +2,7 @@ import json
 import os
 import sys
 from datetime import datetime, timezone, timedelta
+from check_stripchat import is_stripchat_live
 
 # 让 src 目录内的模块可以互相 import
 sys.path.insert(0, os.path.dirname(__file__))
@@ -9,6 +10,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from config import (
     BILIBILI_ROOM_ID,
     YOUTUBE_CHANNEL_ID,
+    STRIPCHAT_USERNAME, 
     STATE_FILE,
 )
 from check_bilibili import is_bilibili_live
@@ -88,6 +90,22 @@ def main():
 
             state["youtube_live"] = y_live
 
+    # ---------- Stripchat（每 5 分钟都查）----------
+    if STRIPCHAT_USERNAME:
+        sc_live, sc_title = is_stripchat_live(STRIPCHAT_USERNAME)
+        was_live = state.get("stripchat_live", False)
+
+        if sc_live and not was_live:
+            send_pushover(
+                title="火羽 Stripchat 开播了！",
+                message=sc_title or "主播已上线",
+                url=f"https://zh.stripchat.com/{STRIPCHAT_USERNAME}",
+            )
+        elif not sc_live and was_live:
+            print("[Stripchat] 已下播")
+
+        state["stripchat_live"] = sc_live
+    
     save_state(state)
     print("检查完成")
 
